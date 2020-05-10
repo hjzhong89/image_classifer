@@ -15,8 +15,8 @@ def get_category_names(labels, category_names, offset=1):
     with open(category_names, 'r') as f:
         category_names = json.load(f)
 
-    labels = [category_names[str(i + offset)] for i in labels.numpy()[0]]
-    return labels
+    names = [category_names[str(i + offset)] for i in labels.numpy()[0]]
+    return names
 
 
 def display_results(image_path, probs, labels, category_names):
@@ -28,7 +28,7 @@ def display_results(image_path, probs, labels, category_names):
     :param category_names: File path to JSON category names
     :return:
     """
-    labels = get_category_names(labels, category_names)
+    names = get_category_names(labels, category_names)
     plt.figure(figsize=(8, 8))
 
     test_image = np.asarray(Image.open(image_path))
@@ -37,5 +37,8 @@ def display_results(image_path, probs, labels, category_names):
     plt.title(image_path)
 
     plt.subplot(1, 2, 2)
-    y_pos = np.arange(len(get_category_names(labels, category_names)))
-    plt.barh(y_pos, probs, tick_label=labels)
+    y_pos = np.arange(len(names))
+    plt.barh(y_pos, probs, tick_label=names)
+
+    plt.tight_layout()
+    plt.show()
